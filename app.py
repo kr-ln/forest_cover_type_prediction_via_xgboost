@@ -245,7 +245,7 @@ with st.expander("🎛️ XGBoost Model Hyperparameters", expanded=False):
     learning_rate = st.slider("learning_rate", 0.01, 1.0, 0.1)
 
 if st.button("Train Model (Make sure you have adjusted the hyperparameters in the section above)"):
-    with st.spinner("⏳ Training the model... This may take a few minutes, please wait."):
+    with st.spinner("⏳ Training the model... This may take a few seconds, please wait."):
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=42, stratify=y
         )
