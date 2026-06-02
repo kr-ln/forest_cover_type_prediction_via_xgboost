@@ -238,6 +238,26 @@ with st.expander("📈 Class Distribution", expanded=False):
 # =========================================
 
 with st.expander("🎛️ XGBoost Model Hyperparameters", expanded=False):
+
+    # =========================================
+    # 📖 Hyperparameters Explanation
+    # =========================================
+    st.markdown("""
+    ### 🧠 Hyperparameters Explanation
+
+    You can edit the first three parameters using the sliders below. The last three are fixed.
+
+    **Editable:**
+    - **n_estimators** → Number of trees in the model. More trees = potentially higher accuracy but slower training.
+    - **max_depth** → Maximum depth of each tree. Higher depth = more complex model, risk of overfitting.
+    - **learning_rate** → Step size for boosting. Smaller = slower but more stable, larger = faster but may be unstable.
+
+    **Fixed (not editable in the app):**
+    - **subsample = 0.8** → Fraction of samples used per tree to reduce overfitting.
+    - **colsample_bytree = 0.8** → Fraction of features used per tree to reduce correlation between trees.
+    - **eval_metric = 'mlogloss'** → Evaluation metric used during training (multi-class log loss).
+    """)
+    
     n_estimators = st.slider("n_estimators", 50, 500, 150)
     max_depth = st.slider("max_depth", 2, 15, 6)
     learning_rate = st.slider("learning_rate", 0.01, 1.0, 0.1)
