@@ -22,12 +22,12 @@ from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode
 # =========================================
 
 st.set_page_config(
-    page_title="Electricity Demand Forecasting in Brazil",
+    page_title="Forest Cover Type Prediction via XGBoost",
     page_icon="📊🌲",
     layout="wide"
 )
 
-st.title("🌲 Forest Cover Type Prediction (XGBoost)")
+st.title("🌲 Forest Cover Type Prediction via XGBoost")
 
 # =========================================
 # LOAD DATASET
