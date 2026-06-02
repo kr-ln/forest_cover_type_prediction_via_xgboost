@@ -11,7 +11,7 @@ An end-to-end Machine Learning classification framework designed to predict domi
 The repository includes:
 
 * **Original Python Pipeline (`main.py`)**
-* **Interactive Streamlit Application (`app.py`)**
+* **Interactive Streamlit Application (`app.py`) in the next link: https://forestcovertypepredictionviaxgboost.streamlit.app/**
 
 Both implementations use the same Forest Cover Type dataset and XGBoost classification framework, while the Streamlit version adds interactive exploration, hyperparameter tuning, visualization, and model analysis capabilities.
 
@@ -404,6 +404,12 @@ Shows:
 * Actual class
 * Correct / Incorrect flag
 * Accuracy over displayed samples
+
+### 🔴 Live Application
+
+Access the deployed Streamlit application here:
+
+https://forestcovertypepredictionviaxgboost.streamlit.app/
 
 ---
 
