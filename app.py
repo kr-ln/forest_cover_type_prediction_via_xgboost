@@ -55,6 +55,8 @@ if "df" not in st.session_state:
 # =========================================
 
 df = load_data()
+X = df.drop(columns=["Cover_Type"]).values
+y = df["Cover_Type"].values - 1
 
 # =========================================
 # 🧠 Summary
@@ -217,8 +219,6 @@ with st.expander("📊 Dataset Metrics", expanded=False):
 # =========================================
 
 with st.expander("📈 Class Distribution", expanded=False):
-    X = df.drop(columns=["Cover_Type"]).values
-    y = df["Cover_Type"].values - 1
 
     unique, counts = np.unique(y, return_counts=True)
 
@@ -244,20 +244,38 @@ with st.expander("🎛️ XGBoost Model Hyperparameters", expanded=False):
 
 if st.button("Train Model (Make sure you have adjusted the hyperparameters in the section above)"):
     with st.spinner("⏳ Training the model... This may take a few seconds, please wait."):
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42, stratify=y
-        )
+        
+        @st.cache_data
+        def get_split(X, y):
+            return train_test_split(
+                X, y, test_size=0.2, random_state=42, stratify=y
+            )
 
-        model = XGBClassifier(
-            n_estimators=n_estimators,
-            max_depth=max_depth,
-            learning_rate=learning_rate,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            eval_metric="mlogloss"
-        )
+        @st.cache_resource
+        def train_model(X_train, y_train, n_estimators, max_depth, learning_rate):
 
-        model.fit(X_train, y_train)
+            model = XGBClassifier(
+                n_estimators=n_estimators,
+                max_depth=max_depth,
+                learning_rate=learning_rate,
+                subsample=0.8,
+                colsample_bytree=0.8,
+                eval_metric="mlogloss"
+            )
+
+            model.fit(X_train, y_train)
+
+            return model
+
+        X_train, X_test, y_train, y_test = get_split(X, y)
+
+        model = train_model(
+            X_train,
+            y_train,
+            n_estimators,
+            max_depth,
+            learning_rate
+        )
 
         y_pred = model.predict(X_test)
 
