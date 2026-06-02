@@ -18,6 +18,32 @@ import seaborn as sns
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode
 
 # =========================================
+# FUNCTIONS
+# =========================================
+
+@st.cache_data
+def get_split(X, y):
+    return train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+@st.cache_resource
+def train_model(X_train, y_train, n_estimators, max_depth, learning_rate):
+
+    model = XGBClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
+        learning_rate=learning_rate,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        eval_metric="mlogloss"
+    )
+
+    model.fit(X_train, y_train)
+
+    return model
+
+# =========================================
 # CONFIG
 # =========================================
 
@@ -247,7 +273,7 @@ with st.expander("📈 Class Distribution", expanded=False):
 
 with st.expander("🎛️ XGBoost Model Hyperparameters", expanded=False):
 
-    # =========================================
+        # =========================================
     # 📖 Hyperparameters Explanation
     # =========================================
     st.markdown("""
@@ -265,7 +291,7 @@ with st.expander("🎛️ XGBoost Model Hyperparameters", expanded=False):
     - **colsample_bytree = 0.8** → Fraction of features used per tree to reduce correlation between trees.
     - **eval_metric = 'mlogloss'** → Evaluation metric used during training (multi-class log loss).
     """)
-    
+
     n_estimators = st.slider("n_estimators", 50, 500, 150)
     max_depth = st.slider("max_depth", 2, 15, 6)
     learning_rate = st.slider("learning_rate", 0.01, 1.0, 0.1)
@@ -273,28 +299,6 @@ with st.expander("🎛️ XGBoost Model Hyperparameters", expanded=False):
 if st.button("Train Model (Make sure you have adjusted the hyperparameters in the section above)"):
     with st.spinner("⏳ Training the model... This may take a few seconds, please wait."):
         
-        @st.cache_data
-        def get_split(X, y):
-            return train_test_split(
-                X, y, test_size=0.2, random_state=42, stratify=y
-            )
-
-        @st.cache_resource
-        def train_model(X_train, y_train, n_estimators, max_depth, learning_rate):
-
-            model = XGBClassifier(
-                n_estimators=n_estimators,
-                max_depth=max_depth,
-                learning_rate=learning_rate,
-                subsample=0.8,
-                colsample_bytree=0.8,
-                eval_metric="mlogloss"
-            )
-
-            model.fit(X_train, y_train)
-
-            return model
-
         X_train, X_test, y_train, y_test = get_split(X, y)
 
         model = train_model(
