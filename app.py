@@ -30,6 +30,14 @@ st.set_page_config(
 st.title("🌲 Forest Cover Type Prediction via XGBoost")
 
 # =========================================
+# CACHE MANAGEMENT BUTTON
+# =========================================
+if st.button("🧹 Clear Streamlit Cache"):
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.success("✅ Cache cleared! Reload the app to start fresh.")
+
+# =========================================
 # LOAD DATASET
 # =========================================
 
